@@ -4,7 +4,7 @@ security:
 
     # to encrypt the passwords
     encoders:
-        AppBundle\Entity\User: bcrpyt
+        AppBundle\Entity\User: bcrypt
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
@@ -35,3 +35,10 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+
+    # Providing the access control for the users list which are defined in the entity form - get role sections
+    # ROLE_USER ; ROLE_ADMIN; ROLE_XXX its anything but underscore and path will be given to access
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_USER }

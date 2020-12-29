@@ -29,9 +29,8 @@ class HashPasswordListener implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof  User)
-        {
-            return ;
+        if (!$entity instanceof User) {
+            return;
         }
 
         $this->encodePassword($entity);
@@ -40,9 +39,8 @@ class HashPasswordListener implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof  User)
-        {
-            return ;
+        if (!$entity instanceof User) {
+            return;
         }
 
         $this->encodePassword($entity);
@@ -50,7 +48,7 @@ class HashPasswordListener implements EventSubscriber
         // force update to see changes
 
         $em = $args->getEntityManager();
-        $meta =$em->getClassMetadata(get_class($entity));
+        $meta = $em->getClassMetadata(get_class($entity));
         $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
     }
 
@@ -63,6 +61,7 @@ class HashPasswordListener implements EventSubscriber
     }
 
     // User's password will changed. This lines can be re-used. so lets refactor and name it has encodePassword
+
     /**
      * @param User $entity
      */

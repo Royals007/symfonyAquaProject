@@ -28,6 +28,7 @@ class User implements UserInterface
 
 
     /**
+     * To password encode
      * @ORM\Column(type="string")
      */
     private $password;
@@ -47,7 +48,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        // See Security.yml
         return ['ROLE_USER'];
     }
 
@@ -99,13 +100,12 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
 
         // forces the object to look 'dirty' to doctrine.
-        //Avoids doctrine  NOT saving this entity field, unless this plainPassword has been changed
+        // Avoids doctrine  NOT saving this entity field, unless this plainPassword has been changed
         // This object looks it has been changed (password)
         // it is very essential part
 
         $this->password = null;
     }
-
 
 
 }
