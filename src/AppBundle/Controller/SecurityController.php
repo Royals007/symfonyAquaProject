@@ -5,11 +5,10 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\LoginForm;
-use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class SecurityController extends Controller
+class SecurityController extends  Controller
 {
     /**
      * @Route("/login", name="security_login")
@@ -31,19 +30,9 @@ class SecurityController extends Controller
             array(
                 // last username entered by the user
                 'form' => $form->createView(),  // pass the form into template
-                'error' => $error,
+                'error'=> $error,
             )
         );
     }
-
-
-    /**
-     * @Route("/logout", name="security_logout")
-     */
-    public function logoutAction()
-    {
-        throw new Exception('Unable to reach it');
-    }
-
 
 }

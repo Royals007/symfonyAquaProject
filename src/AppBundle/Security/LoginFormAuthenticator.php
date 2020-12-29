@@ -6,15 +6,11 @@ namespace AppBundle\Security;
 use AppBundle\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
-
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -23,15 +19,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     //To add this Users data in DB used the EntityManager as the second argument
 
     private $formFactory;
-    private $em;
+    private  $em;
     private $router;
-    private $passwordEncoder;
 
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder)
+    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router)
     {
-        $this->formFactory = $formFactory;
+        $this->formFactory= $formFactory;
         $this->em = $em;
-        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function getCredentials(Request $request)
@@ -39,8 +33,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         // check the URL is /login and HTTP method is POST-- login form is in action state
         $isLoginSubmit = $request->getPathInfo() == '/login' && $request->isMethod('POST');
 
-        if (!$isLoginSubmit) {
-            return;
+        if(!$isLoginSubmit){
+            return ;
         }
 
         //Return the credentials
@@ -50,12 +44,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         // Not checking the validation form data
         // getting the login_data
         $loginData = $form->getData();
-
-
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $loginData['_username']
-        );
 
         return $loginData;
 
@@ -75,7 +63,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         $password = $credentials['_password'];
-        if ($this->passwordEncoder->isPasswordValid($user, $password)) {
+        if(!$password == 'loginsymfony')
+        {
             return true;
         }
 
@@ -88,17 +77,5 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         //Authentication fails -- then need to fill login details into loginUrl
         return $this->router->generate('security_login');
     }
-
-//    protected function getDefaultSuccessRedirectUrl()
-//    {
-//        return $this->router->generate('homepage');
-//    }
-
-
-    //how to get the redirect the same page if information is given wrong.
-//    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-//    {
-//        return new RedirectResponse($this->router->generate('homepage'));
-//    }
 
 }
