@@ -6,11 +6,14 @@ namespace AppBundle\Security;
 use AppBundle\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -45,6 +48,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         // getting the login_data
         $loginData = $form->getData();
 
+
+        $request->getSession()->set(
+            Security::LAST_USERNAME,
+            $loginData['_username']
+        );
+
         return $loginData;
 
     }
@@ -63,7 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         $password = $credentials['_password'];
-        if(!$password == 'loginsymfony')
+        if(!$password == 'symfony')
         {
             return true;
         }
@@ -77,5 +86,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         //Authentication fails -- then need to fill login details into loginUrl
         return $this->router->generate('security_login');
     }
+
+//    protected function getDefaultSuccessRedirectUrl()
+//    {
+//        return $this->router->generate('homepage');
+//    }
+
+
+    //how to get the redirect the same page if information is given wrong.
+//    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+//    {
+//        return new RedirectResponse($this->router->generate('homepage'));
+//    }
 
 }

@@ -2,6 +2,10 @@
 # http://symfony.com/doc/current/book/security.html
 security:
 
+    # to encrypt the passwords
+    encoders:
+        AppBundle\Entity\User: bcrpyt
+
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory:
@@ -19,6 +23,10 @@ security:
             guard:
                 authenticators:
                     - app.security.login_form_authenticator
+
+
+            logout:
+                path: /logout
 
             # activate different ways to authenticate
 

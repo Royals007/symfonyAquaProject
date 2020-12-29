@@ -23,8 +23,6 @@
  * ************** CAUTION **************
  */
 
-use Symfony\Component\Intl\Intl;
-
 /**
  * Represents a single PHP requirement, e.g. an installed extension.
  * It can be a mandatory requirement or an optional recommendation.
@@ -683,19 +681,19 @@ class SymfonyRequirements extends RequirementCollection
             );
 
             if (class_exists('Symfony\Component\Intl\Intl')) {
-				$this->addRecommendation(
-					Intl::getIcuDataVersion() <= Intl::getIcuVersion(),
-					sprintf('intl ICU version installed on your system is outdated (%s) and does not match the ICU data bundled with Symfony (%s)', Intl::getIcuVersion(), Intl::getIcuDataVersion()),
-					'To get the latest internationalization data upgrade the ICU system package and the intl PHP extension.'
-				);
-				if (Intl::getIcuDataVersion() <= Intl::getIcuVersion()) {
-					$this->addRecommendation(
-						Intl::getIcuDataVersion() === Intl::getIcuVersion(),
-						sprintf('intl ICU version installed on your system (%s) does not match the ICU data bundled with Symfony (%s)', Intl::getIcuVersion(), Intl::getIcuDataVersion()),
-						'To avoid internationalization data inconsistencies upgrade the symfony/intl component.'
-					);
-				}
-			}
+                $this->addRecommendation(
+                    \Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion(),
+                    sprintf('intl ICU version installed on your system is outdated (%s) and does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                    'To get the latest internationalization data upgrade the ICU system package and the intl PHP extension.'
+                );
+                if (\Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion()) {
+                    $this->addRecommendation(
+                        \Symfony\Component\Intl\Intl::getIcuDataVersion() === \Symfony\Component\Intl\Intl::getIcuVersion(),
+                        sprintf('intl ICU version installed on your system (%s) does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                        'To avoid internationalization data inconsistencies upgrade the symfony/intl component.'
+                    );
+                }
+            }
 
             $this->addPhpIniRecommendation(
                 'intl.error_level',
