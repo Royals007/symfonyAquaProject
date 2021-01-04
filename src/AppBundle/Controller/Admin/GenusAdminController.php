@@ -10,13 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Security ("is_granted('ROLE_ADMIN')")
+ * @Security ("is_granted('ROLE_MANAGE_GENUS')")
  * @Route("/admin")
  */
 class GenusAdminController extends Controller
 {
     /**
-	 * //@Security ("is_granted('ROLE_ADMIN')")
+	 * //(at)Security ("is_granted('ROLE_ADMIN')")
      * @Route("/genus", name="admin_genus_list")
      */
     public function indexAction()
@@ -52,7 +52,10 @@ class GenusAdminController extends Controller
             $em->persist($genus);
             $em->flush();
 
-            $this->addFlash('Success', 'A New Genus is Created!');
+            $this->addFlash(
+            	'Success',
+				sprintf('A New Genus is Created : %s!', $this->getUser()->getEmail()) // shows who is created
+				);
 
             return $this->redirectToRoute('admin_genus_list');
         }

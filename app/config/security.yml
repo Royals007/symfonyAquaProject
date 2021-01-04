@@ -6,6 +6,7 @@ security:
     encoders:
         AppBundle\Entity\User: bcrypt
 
+
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
 #        in_memory:
@@ -33,6 +34,9 @@ security:
             logout:
                 path: /logout
 
+            switch_user: ~ # activate the sys to switch the user (impersonate) after logged in. done by URL add "?_switch_user=roy%2b@eamil.com (%2b is + symbol; user provider property here is email)
+                                #to exit that user to your profile then add in URL ?_switch_user=_exit.
+
             # activate different ways to authenticate
 
             # http_basic: ~
@@ -47,3 +51,6 @@ security:
 
     access_control:
        # - { path: ^/admin, roles: ROLE_USER }  #Role can be anything but start with ROLE_XXX, ROLE_ADMIN,...
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_MANAGE_GENUS, ROLE_ALLOWED_TO_SWITCH]   # who has ROLE_ADMIN those can access to ROLE_MANAGE_GENUS
