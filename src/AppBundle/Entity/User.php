@@ -4,12 +4,15 @@
 namespace AppBundle\Entity;
 
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
+ * @UniqueEntity(fields={"email"}, message="This User has already existed!")
  */
 class User implements UserInterface
 {
@@ -23,6 +26,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", unique=true)
+	 * @Assert\NotBlank ()
+	 * @Assert\Email()
      */
     private $email;
 
@@ -36,12 +41,14 @@ class User implements UserInterface
 
     /**
      * creates a non-persisted field -- for encoded password
+	 * @Assert\NotBlank (groups={"Registration"})
+	 * registration just name and add to UserRegistrationForm section
+	 * this plain pwd used for only registration form so added/created a group (ex: edit profile page)
      */
     private $plainPassword;
 
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
         return $this->email;
     }
 
