@@ -8,8 +8,13 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+#        in_memory:
+#            memory: ~
+
+        #User_provider - provides loading user session, up-to-date, remember me, impersonate
+        #not users imported into DB then create custom user provider that implements the UserProviderInterface
+        users_info:  #should be any name
+            entity: {class: AppBundle\Entity\User, property: email}
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -41,4 +46,4 @@ security:
     # ROLE_USER ; ROLE_ADMIN; ROLE_XXX its anything but underscore and path will be given to access
 
     access_control:
-        - { path: ^/admin, roles: ROLE_USER }
+       # - { path: ^/admin, roles: ROLE_USER }  #Role can be anything but start with ROLE_XXX, ROLE_ADMIN,...

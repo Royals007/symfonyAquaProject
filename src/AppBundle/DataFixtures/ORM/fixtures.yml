@@ -25,5 +25,6 @@ AppBundle\Entity\User:
         # use some fake data for this
         email: roy+<current()>@gmail.com
         plainPassword: symfony
+        roles: ['ROLE_ADMIN']  # for now, provides the role access as a admin
 
 

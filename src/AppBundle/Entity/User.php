@@ -45,12 +45,31 @@ class User implements UserInterface
         return $this->email;
     }
 
+    // this is used to set the ROLES permission; added and stored $roles in a array
+	// providing roles functions in fixtures.yml to order to login as a res. role
+    /**
+	 * @ORM\Column (type="json")
+	 */
+    private $roles = [];
+
 
     public function getRoles()
     {
         // See Security.yml
-        return ['ROLE_USER'];
+        //return ['ROLE_USER'];
+        $roles = $this->roles;
+
+        if (!in_array('ROLE_USER', $roles)){
+        	$roles[] = 'ROLE_USER';
+		}
+
+        return $roles;
     }
+
+	public function setRoles($roles)
+	{
+		$this->roles = $roles;
+	}
 
     public function getPassword()
     {

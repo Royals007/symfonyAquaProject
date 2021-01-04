@@ -5,19 +5,26 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Genus;
 use AppBundle\Form\GenusFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * @Security ("is_granted('ROLE_ADMIN')")
  * @Route("/admin")
  */
 class GenusAdminController extends Controller
 {
     /**
+	 * //@Security ("is_granted('ROLE_ADMIN')")
      * @Route("/genus", name="admin_genus_list")
      */
     public function indexAction()
     {
+    	//provides the access control for given credential users
+		// this message for us only as below or use annotations
+		//$this->denyAccessUnlessGranted('ROLE_ADMIN'); // to apply to all controllers then use @top, annotations
+
         $genuses = $this->getDoctrine()
             ->getRepository('AppBundle:Genus')
             ->findAll();

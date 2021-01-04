@@ -41,7 +41,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $isLoginSubmit = $request->getPathInfo() == '/login' && $request->isMethod('POST');
 
         if (!$isLoginSubmit) {
-            return;
+            return; // add the authentication later
         }
 
         //Return the credentials
@@ -90,10 +90,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('security_login');
     }
 
-//    protected function getDefaultSuccessRedirectUrl()
-//    {
-//        return $this->router->generate('homepage');
-//    }
+    protected function getDefaultSuccessRedirectUrl()
+    {
+        return $this->router->generate('homepage');
+    }
 
 
     //how to get the redirect the same page if information is given wrong.
