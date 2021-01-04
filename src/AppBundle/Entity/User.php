@@ -95,6 +95,9 @@ class User implements UserInterface
         $this->email = $email;
     }
 
+	/**
+	 * @return mixed
+	 */
 	public function getEmail()
 	{
 		return $this->email;
