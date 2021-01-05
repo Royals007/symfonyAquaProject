@@ -1,31 +1,35 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
+
+#service id is replaced as class name in symfony 3.3
+imports:
+    - {resource: services_aliases.yml}
+
 parameters:
 #    parameter_name: value
 
 services:
-    app.markdown_transformer:
-        class: AppBundle\Service\MarkdownTransformer
+    # updating to 3.3; this key provides defaults all services in this list
+    # Autowire is applicable to all in this list
+    # configure aut. tags - doesn't work doctrine ext. or extended_type tags.. cannot guess by system
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\Service\MarkdownTransformer:
         arguments: [ '@markdown.parser', '@doctrine_cache.providers.my_markdown_cache' ]
 
-    app.markdown_extension:
-        class: AppBundle\Twig\MarkdownExtension
-        tags:
-            - { name: twig.extension }
+    AppBundle\Twig\MarkdownExtension:
         #arguments: ['@app.markdown_transformer']
-        autowire: true
 
-    app.security.login_form_authenticator:
-        class: AppBundle\Security\LoginFormAuthenticator
-        autowire: true
+    AppBundle\Security\LoginFormAuthenticator: ~
 
 
     #registering the new service and set the class.
     # Doctrine about our event subscriber, we will add a tag -- to tell the sys to use our services
 
-    app.doctrine.hash_password_listener:
-        class: AppBundle\Doctrine\HashPasswordListener
-        autowire: true
+    AppBundle\Doctrine\HashPasswordListener:
         tags:
             - { name: doctrine.event_subscriber }
 
