@@ -16,14 +16,14 @@ use Symfony\Component\HttpFoundation\Request;
 class GenusAdminController extends Controller
 {
     /**
-	 * //(at)Security ("is_granted('ROLE_ADMIN')")
+     * //(at)Security ("is_granted('ROLE_ADMIN')")
      * @Route("/genus", name="admin_genus_list")
      */
     public function indexAction()
     {
-    	//provides the access control for given credential users
-		// this message for us only as below or use annotations
-		//$this->denyAccessUnlessGranted('ROLE_ADMIN'); // to apply to all controllers then use @top, annotations
+        //provides the access control for given credential users
+        // this message for us only as below or use annotations
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN'); // to apply to all controllers then use @top, annotations
 
         $genuses = $this->getDoctrine()
             ->getRepository('AppBundle:Genus')
@@ -40,7 +40,7 @@ class GenusAdminController extends Controller
     public function newAction(Request $request)
     {
         // let's go to work!
-        $form = $this->createForm( GenusFormType::class);
+        $form = $this->createForm(GenusFormType::class);
 
         // handles the data only POST
         $form->handleRequest($request);
@@ -53,18 +53,17 @@ class GenusAdminController extends Controller
             $em->flush();
 
             $this->addFlash(
-            	'Success',
-				sprintf('A New Genus is Created : %s!', $this->getUser()->getEmail()) // shows who is created
-				);
+                'Success',
+                sprintf('A New Genus is Created : %s!', $this->getUser()->getEmail()) // shows who is created
+            );
 
             return $this->redirectToRoute('admin_genus_list');
         }
 
-        return $this->render(':admin/genus:new.html.twig', [
+        return $this->render('admin/genus/new.html.twig', [
             'genusForm' => $form->createView()
         ]);
     }
-
 
     /**
      * @Route("/genus/{id}/edit", name="admin_genus_edit")
@@ -89,7 +88,7 @@ class GenusAdminController extends Controller
             return $this->redirectToRoute('admin_genus_list');
         }
 
-        return $this->render(':admin/genus:edit.html.twig', [
+        return $this->render('admin/genus/edit.html.twig', [
             'genusForm' => $form->createView()
         ]);
     }

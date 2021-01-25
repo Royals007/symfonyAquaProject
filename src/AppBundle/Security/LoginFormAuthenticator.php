@@ -1,12 +1,10 @@
 <?php
 
-
 namespace AppBundle\Security;
 
 use AppBundle\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -18,7 +16,6 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-
     //Create a Auth.Form -- USE of dependency Injection to inject the form.factory service
     //To add this Users data in DB used the EntityManager as the second argument
 
@@ -27,8 +24,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $router;
     private $passwordEncoder;
 
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder)
-    {
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        EntityManager $em,
+        RouterInterface $router,
+        UserPasswordEncoder $passwordEncoder
+    ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->router = $router;
@@ -52,14 +53,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         // getting the login_data
         $loginData = $form->getData();
 
-
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $loginData['_username']
         );
 
         return $loginData;
-
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -83,7 +82,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return false;
     }
 
-
     protected function getLoginUrl()
     {
         //Authentication fails -- then need to fill login details into loginUrl
@@ -95,11 +93,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('homepage');
     }
 
-
     //how to get the redirect the same page if information is given wrong.
 //    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
 //    {
 //        return new RedirectResponse($this->router->generate('homepage'));
 //    }
-
 }

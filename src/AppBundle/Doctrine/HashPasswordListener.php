@@ -1,21 +1,16 @@
 <?php
 
-
 namespace AppBundle\Doctrine;
-
 
 use AppBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
-
 // this class is used to add or remove Entity
 class HashPasswordListener implements EventSubscriber
 {
-
     private $passwordEncoder;
-
 
     /**
      * HashPasswordListener constructor.
@@ -52,7 +47,6 @@ class HashPasswordListener implements EventSubscriber
         $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
     }
 
-
     public function getSubscribedEvents()
     {
         // prePersist : right before Entity is originally inserted
@@ -65,11 +59,12 @@ class HashPasswordListener implements EventSubscriber
     /**
      * @param User $entity
      */
-    public function encodePassword(User $entity)
+    private function encodePassword(User $entity)
     {
+        if (!$entity->getPlainPassword()) {
+            return;
+        }
         $encoded = $this->passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
         $entity->setPassword($encoded);
     }
-
-
 }

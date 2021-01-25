@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Entity;
-
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,11 +23,10 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", unique=true)
-	 * @Assert\NotBlank ()
-	 * @Assert\Email()
+     * @Assert\NotBlank ()
+     * @Assert\Email()
      */
     private $email;
-
 
     /**
      * To password encode
@@ -38,12 +34,12 @@ class User implements UserInterface
      */
     private $password;
 
-
     /**
      * creates a non-persisted field -- for encoded password
-	 * @Assert\NotBlank (groups={"Registration"})
-	 * registration just name and add to UserRegistrationForm section
-	 * this plain pwd used for only registration form so added/created a group (ex: edit profile page)
+     * @Assert\NotBlank (groups={"Registration"})
+     * registration just name and add to UserRegistrationForm section
+     * this plain pwd used for only registration form so added/created a group (ex: edit profile page)
+     * @var string
      */
     private $plainPassword;
 
@@ -53,12 +49,11 @@ class User implements UserInterface
     }
 
     // this is used to set the ROLES permission; added and stored $roles in a array
-	// providing roles functions in fixtures.yml to order to login as a res. role
+    // providing roles functions in fixtures.yml to order to login as a res. role
     /**
-	 * @ORM\Column (type="json")
-	 */
+     * @ORM\Column (type="json")
+     */
     private $roles = [];
-
 
     public function getRoles()
     {
@@ -66,22 +61,22 @@ class User implements UserInterface
         //return ['ROLE_USER'];
         $roles = $this->roles;
 
-        if (!in_array('ROLE_USER', $roles)){
-        	$roles[] = 'ROLE_USER';
-		}
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return $roles;
     }
 
-	public function setRoles($roles)
-	{
-		$this->roles = $roles;
-	}
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
 
     public function getPassword()
     {
         // TODO: Implement getPassword() method.
-        return $this->getPassword();
+        return $this->password;
     }
 
     public function getSalt()
@@ -97,18 +92,18 @@ class User implements UserInterface
 
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function setEmail($email)
     {
         $this->email = $email;
     }
-
-	/**
-	 * @return mixed
-	 */
-	public function getEmail()
-	{
-		return $this->email;
-	}
 
     /**
      * @param mixed $password
@@ -140,6 +135,4 @@ class User implements UserInterface
 
         $this->password = null;
     }
-
-
 }

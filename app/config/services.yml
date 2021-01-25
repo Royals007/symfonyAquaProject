@@ -3,33 +3,60 @@
 
 #service id is replaced as class name in symfony 3.3
 imports:
-    - {resource: services_aliases.yml}
+  - { resource: services_aliases.yml }
 
 parameters:
 #    parameter_name: value
 
 services:
-    # updating to 3.3; this key provides defaults all services in this list
-    # Autowire is applicable to all in this list
-    # configure aut. tags - doesn't work doctrine ext. or extended_type tags.. cannot guess by system
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        public: false
+  # updating to 3.3; this key provides defaults all services in this list
+  # Autowire is applicable to all in this list
+  # configure aut. tags - doesn't work doctrine ext. or extended_type tags.. cannot guess by system
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
 
-    AppBundle\Service\MarkdownTransformer:
-        arguments: [ '@markdown.parser', '@doctrine_cache.providers.my_markdown_cache' ]
+  # taken from sym standard Ed. git -> services.yml
+  # makes classes in src/AppBundle available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  AppBundle\:
+    resource: '../../src/AppBundle/*'
+    # you can exclude directories or files
+    # but if a service is unused, it's removed anyway
+    exclude: '../../src/AppBundle/{Entity,Repository}'
 
-    AppBundle\Twig\MarkdownExtension:
-        #arguments: ['@app.markdown_transformer']
+  # controllers are services (sym3)
+  # controllers are imported separately to make sure they're public
+  # and have a tag that allows actions to type-hint services
+  AppBundle\Controller\:
+    resource: '../../src/AppBundle/Controller'
+    public: true
+    tags: [ 'controller.service_arguments' ]
 
-    AppBundle\Security\LoginFormAuthenticator: ~
+
+  #    AppBundle\Service\MarkdownTransformer:
+  #        arguments: [ '@markdown.parser', '@doctrine_cache.providers.my_markdown_cache' ]
+  # Alias to allow this type to be autowired
+  Knp\Bundle\MarkdownBundle\MarkdownParserInterface: '@markdown.parser'
+  Doctrine\ORM\EntityManager: '@doctrine.orm.default_entity_manager'
+
+  AppBundle\Service\MarkdownTransformer:
+    arguments:
+      $cacheDriver: '@doctrine_cache.providers.my_markdown_cache'
 
 
-    #registering the new service and set the class.
-    # Doctrine about our event subscriber, we will add a tag -- to tell the sys to use our services
+  # removing due to redundancy; above controller already adds these services 'auto-registering'
+  #    AppBundle\Twig\MarkdownExtension:
+  #        #arguments: ['@app.markdown_transformer']
+  #
+  AppBundle\Security\LoginFormAuthenticator: ~
 
-    AppBundle\Doctrine\HashPasswordListener:
-        tags:
-            - { name: doctrine.event_subscriber }
+  #registering the new service and set the class.
+  # Doctrine about our event subscriber, we will add a tag -- to tell the sys to use our services
 
+  AppBundle\Doctrine\HashPasswordListener:
+    tags:
+      - { name: doctrine.event_subscriber }
+
+  #Note: if class name /service Id uses same class more than one time then don't combine class as service id.

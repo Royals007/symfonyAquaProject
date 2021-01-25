@@ -1,56 +1,53 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
+  # to encrypt the passwords
+  encoders:
+    AppBundle\Entity\User: bcrypt
 
-    # to encrypt the passwords
-    encoders:
-        AppBundle\Entity\User: bcrypt
+  # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+  providers:
+    #        in_memory:
+    #            memory: ~
 
+    #User_provider - provides loading user session, up-to-date, remember me, impersonate
+    #not users imported into DB then create custom user provider that implements the UserProviderInterface
+    users_info: #should be any name
+      entity: { class: AppBundle\Entity\User, property: email }
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
-    providers:
-#        in_memory:
-#            memory: ~
+  firewalls:
+    # disables authentication for assets and the profiler, adapt it according to your needs
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        #User_provider - provides loading user session, up-to-date, remember me, impersonate
-        #not users imported into DB then create custom user provider that implements the UserProviderInterface
-        users_info:  #should be any name
-            entity: {class: AppBundle\Entity\User, property: email}
+    main:
+      anonymous: ~
 
-    firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+      guard:
+        authenticators:
+          - app.security.login_form_authenticator
 
-        main:
-            anonymous: ~
+      logout:
+        path: /logout
 
-            guard:
-                authenticators:
-                    - app.security.login_form_authenticator
+      switch_user: ~ # activate the sys to switch the user (impersonate) after logged in. done by URL add "?_switch_user=roy%2b@eamil.com (%2b is + symbol; user provider property here is email)
+      #to exit that user to your profile then add in URL ?_switch_user=_exit.
 
+      # activate different ways to authenticate
 
-            logout:
-                path: /logout
+      # http_basic: ~
+      # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            switch_user: ~ # activate the sys to switch the user (impersonate) after logged in. done by URL add "?_switch_user=roy%2b@eamil.com (%2b is + symbol; user provider property here is email)
-                                #to exit that user to your profile then add in URL ?_switch_user=_exit.
-
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+      # form_login: ~
+      # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
 
-    # Providing the access control for the users list which are defined in the entity form - get role sections
-    # ROLE_USER ; ROLE_ADMIN; ROLE_XXX its anything but underscore and path will be given to access
+  # Providing the access control for the users list which are defined in the entity form - get role sections
+  # ROLE_USER ; ROLE_ADMIN; ROLE_XXX its anything but underscore and path will be given to access
 
-    access_control:
-       # - { path: ^/admin, roles: ROLE_USER }  #Role can be anything but start with ROLE_XXX, ROLE_ADMIN,...
+  access_control:
+  # - { path: ^/admin, roles: ROLE_USER }  #Role can be anything but start with ROLE_XXX, ROLE_ADMIN,...
 
-    role_hierarchy:
-        ROLE_ADMIN: [ROLE_MANAGE_GENUS, ROLE_ALLOWED_TO_SWITCH]   # who has ROLE_ADMIN those can access to ROLE_MANAGE_GENUS
+  role_hierarchy:
+    ROLE_ADMIN: [ ROLE_MANAGE_GENUS, ROLE_ALLOWED_TO_SWITCH ]   # who has ROLE_ADMIN those can access to ROLE_MANAGE_GENUS

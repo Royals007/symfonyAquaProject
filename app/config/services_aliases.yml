@@ -1,3 +1,4 @@
+# These services are still in public coz dont break the functionality of our App (_defaults key...)
 services:
   app.markdown_transformer: '@AppBundle\Service\MarkdownTransformer'
   app.markdown_extension: '@AppBundle\Twig\MarkdownExtension'

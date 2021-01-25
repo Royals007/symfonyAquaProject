@@ -1,11 +1,8 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
-
 use AppBundle\Form\LoginForm;
-use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -36,14 +33,11 @@ class SecurityController extends Controller
         );
     }
 
-
     /**
      * @Route("/logout", name="security_logout")
      */
     public function logoutAction()
     {
-        throw new Exception('Unable to reach it');
+        throw new \Exception('Unable to reach it');
     }
-
-
 }

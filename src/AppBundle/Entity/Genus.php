@@ -136,7 +136,6 @@ class Genus
         return $this->isPublished;
     }
 
-
     /**
      * @return ArrayCollection|GenusNote[]
      */

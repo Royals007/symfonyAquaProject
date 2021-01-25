@@ -34,8 +34,8 @@
         var notesUrl = '{{ path('genus_show_notes', {'name': genus.name}) }}';
 
         ReactDOM.render(
-          <NoteSection url={notesUrl} />,
-          document.getElementById('js-notes-wrapper')
+            <NoteSection url={notesUrl}/>,
+            document.getElementById('js-notes-wrapper')
         );
     </script>
 {% endblock %}

@@ -24,7 +24,7 @@ class GenusFormType extends AbstractType
                 'placeholder' => 'Choose a Sub Family',
                 'class' => SubFamily::class,
                 //to keep all my queries in one place called below repository name
-                'query_builder' => function(SubFamilyRepository $repo){
+                'query_builder' => function (SubFamilyRepository $repo) {
                     return $repo->createAlphabeticalQueryBuilder();
                 }
             ])
@@ -34,13 +34,13 @@ class GenusFormType extends AbstractType
                 'choices' => [
                     'Yes' => true,
                     'No' => false,
-                ]])
+                ]
+            ])
             ->add('firstDiscoveredAt', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => ['class' => 'js-datepicker'],
                 'html5' => false,
-            ])
-            ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -51,8 +51,8 @@ class GenusFormType extends AbstractType
 
     }
 
-    public function getBlockPrefix()
-    {
-        return 'app_bundle_genus_form_type';
-    }
+//    public function getBlockPrefix()
+//    {
+//        return 'app_bundle_genus_form_type';
+//    }
 }

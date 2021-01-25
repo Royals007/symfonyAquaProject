@@ -1,5 +1,5 @@
 {
-    "name": "knpuniversity/symfony",
+    "name": "symfony/symfonyaquaproject",
     "license": "proprietary",
     "type": "project",
     "autoload": {
